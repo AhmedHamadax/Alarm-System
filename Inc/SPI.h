@@ -8,22 +8,15 @@
 #ifndef SPI_H_
 #define SPI_H_
 
+#include "stm32f103.h"
 #include "Error.h"
 #include <stdint.h>
 #include <stdlib.h>
-#include "DMA.h"
-#include "stm32f446re.h"
-#define SPI1_Base_Address 0x40013000
-#define SPI2_Base_Address 0x40003800
-#define SPI3_Base_Address 0x40003C00
-#define SPI4_Base_Address 0x40013400
-
-
 typedef enum{SPI1,SPI2,SPI3,SPI4}SPI_Number_t;
 
-typedef enum{Full_Duplex_SPI,Half_Duplex_SPI}Duplex_t;
+typedef enum{Full_Duplex,Half_Duplex}Duplex_t;
 
-typedef enum{spi1,spi2,spi3,spi4}One_Direction_Mode_t;
+typedef enum{Recieve_Only,Transmit_Only}One_Direction_Mode_t;
 
 typedef enum{Slave,Master}Master_Slave_t;
 
@@ -46,14 +39,12 @@ typedef struct {
 	En_t SPI_En;
 	uint8_t baud;
 	Master_Slave_t Master_Slave;
-	En_t TXEIE;
-	En_t RXNEIE;
-
+	En_t SS_En;
+	En_t SPI_TXEIE;
+	En_t SPI_RXEIE;
 	En_t CRC;
-
 	En_t SSI;
-	En_t DMA_TX_IT;
-	En_t DMA_RX_IT;
+
 
 }SPI_Handle_t;
 
@@ -65,9 +56,11 @@ Err_Status SPI_Init(SPI_Handle_t*SPI_handle);
 
 Err_Status SPI_Send_Data_IT(SPI_Handle_t*,uint8_t*);
 
-Err_Status SPI_Recieve_Data_IT(SPI_Handle_t*SPI_handle,uint32_t*Destination);
+Err_Status SPI_Send_Data_DMA(SPI_Handle_t*,uint32_t);
 
-Err_Status SPI_Transfer_P2M_DMA(DMA_Handle_t*,SPI_Handle_t*,uint32_t , uint16_t );
+void SPI_IRQ_Handler(uint8_t Num);
+
+
 
 
 #endif /* SPI_H_ */

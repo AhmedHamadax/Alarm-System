@@ -2,13 +2,12 @@
  * std_macro.h
  *
  * Created: 11/13/2022 11:42:15 PM
- *  Author: Ahmed Hamada
+ *  Author: LOGO
  */ 
 
 
 #ifndef STD_MACRO_H_
 #define STD_MACRO_H_
-
 
 #define F_CPU 16000000UL
 
